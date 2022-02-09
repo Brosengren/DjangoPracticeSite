@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+    Braden's Blog
+{% endblock %}
+
+
+{% block content %}
+    <h1>These are my blog entries</h1>
+    <ul>
+        {% for entry, data in blog_entries.items %}
+        {% comment %} <a href="{% url "blog_entry" entry %}"> {% endcomment %}
+            <div>
+                <h1>{{ entry|title }}</h1>
+                <img src="{% static "blog/images/" %}{{ data.pic }}" title="{{ data.pic }}">
+                <p>{{ data.desc }}</p>
+            
+            </div>
+        {% comment %} </a> {% endcomment %}
+        {% endfor %}
+    </ul>
+{% endblock %}
