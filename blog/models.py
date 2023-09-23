@@ -3,7 +3,6 @@ import email
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinLengthValidator
-from matplotlib.pyplot import text
 
 # Create your models here.
 
@@ -17,7 +16,6 @@ class Author(models.Model):
 
     def __str__(self):
         return self.full_name()
-
 
 class Tag(models.Model):
     tag = models.CharField(max_length=32)
