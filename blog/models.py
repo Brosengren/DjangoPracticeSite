@@ -3,13 +3,14 @@ import email
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinLengthValidator
+from matplotlib.pyplot import text
 
 # Create your models here.
 
 class Author(models.Model):
-    first_name          = models.CharField(max_length=64)
-    last_name           = models.CharField(max_length=128)
-    email_address       = models.EmailField(max_length=128)
+    first_name      = models.CharField(max_length=64)
+    last_name       = models.CharField(max_length=128)
+    email_address   = models.EmailField(max_length=128)
 
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -28,7 +29,7 @@ class Tag(models.Model):
 class Post(models.Model):
     title               = models.CharField(max_length=128, null=False)
     excerpt             = models.CharField(max_length=256, null=False)
-    image               = models.CharField(max_length=64, null=True)
+    image               = models.ImageField(upload_to="posts", null=True)
     date_created        = models.DateTimeField(auto_now_add=True)
     date_last_modified  = models.DateTimeField(auto_now=True)
     slug                = models.SlugField(unique=True, db_index=True)
@@ -41,3 +42,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    user_name   = models.CharField(max_length=64)
+    user_email  = models.EmailField(max_length=128)
+    text        = models.TextField(max_length=1024)
+    post        = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+
