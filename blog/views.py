@@ -1,156 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from datetime import date
-from .models import Post
+from .models import Post, Comment
 from .forms import CommentForm
 from django.views import View
 from django.views.generic import ListView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-# blog_entries={
-#    "Nature is Lit": {
-#         "pic": "flower.webp",
-#         "desc": "Do you see how dope these flowers are?",
-#     },
-#     "What's for Dinner?":{
-#         "pic": "stove.jpg",
-#         "desc": "I've been eating all kinds of different foods",
-#     },
-#     "Cars are Kinda Cool":{
-#         "pic": "mustang.webp",
-#         "desc": "I saw this car and though it was kinda neat.",
-#     },
-# }
-
-# all_posts = [
-#     {
-#         "slug": "hike-in-the-mountains",
-#         "image": "mustang.webp",
-#         "author": "Braden",
-#         "date": date(2021, 1, 31),
-#         "title": "Mountain Hiking",
-#         "excerpt": "There's nothing like the views when hiking in the mountains and I wasn't even prepared for what happened next",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """,
-#     },
-#     {
-#         "slug": "programming-is-fun",
-#         "image": "flower.webp",
-#         "author": "Maximilian",
-#         "date": date(2022, 3, 10),
-#         "title": "Programming Is Great!",
-#         "excerpt": "Did you ever spend hours searching that one error in your code? Yep - that's what happened to me yesterday...",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """
-#     },
-#     {
-#         "slug": "into-the-woods",
-#         "image": "stove.jpg",
-#         "author": "Maximilian",
-#         "date": date(2020, 8, 5),
-#         "title": "Nature At Its Best",
-#         "excerpt": "Nature is amazing! The amount of inspiration I get when walking in nature is incredible!",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """
-#     },
-#     {
-#         "slug": "hike-in-the-mountains2",
-#         "image": "mustang.webp",
-#         "author": "Braden",
-#         "date": date(2017, 1, 31),
-#         "title": "Mountain Hiking",
-#         "excerpt": "There's nothing like the views when hiking in the mountains and I wasn't even prepared for what happened next",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#              Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """,
-#     },
-#     {
-#         "slug": "programming-is-fun2",
-#         "image": "flower.webp",
-#         "author": "Maximilian",
-#         "date": date(2018, 3, 10),
-#         "title": "Programming Is Great!",
-#         "excerpt": "Did you ever spend hours searching that one error in your code? Yep - that's what happened to me yesterday...",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """
-#     },
-#     {
-#         "slug": "into-the-woods2",
-#         "image": "stove.jpg",
-#         "author": "Maximilian",
-#         "date": date(2019, 8, 5),
-#         "title": "Nature At Its Best",
-#         "excerpt": "Nature is amazing! The amount of inspiration I get when walking in nature is incredible!",
-#         "content": """
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-
-#             Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis nobis
-#             aperiam est praesentium, quos iste consequuntur omnis exercitationem quam
-#             velit labore vero culpa ad mollitia? Quis architecto ipsam nemo. Odio.
-#         """
-#     },
-# ]
 
 # Create your views here.
 
@@ -201,7 +58,8 @@ class SinglePostView(View):
         context = {
             "post": post,
             "post_tags":post.tags.all(),
-            "comment_form":CommentForm()
+            "comment_form":CommentForm(),
+            "comments":post.comments.all().order_by("-id") # type: ignore
         }
         return render(request, "blog/post-detail.html", context)
 
@@ -218,6 +76,7 @@ class SinglePostView(View):
         context = {
             "post": post,
             "post_tags":post.tags.all(),
-            "comment_form": comment_form
+            "comment_form": comment_form,
+            "comments":post.comments.all().order_by("-id") # type: ignore
         }
         return render(request, "blog/post-detail.html", context)
