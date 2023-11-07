@@ -31,6 +31,7 @@
     </main>
 
     <section id="comments">
+        {% if comments %}
         <ul>
             {% for comment in comments %}
             <li>
@@ -39,6 +40,9 @@
             </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <h2>No comments yet</h2>
+        {% endif %}
     </section>
 
     <section id="comment-form">
