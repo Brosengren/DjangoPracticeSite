@@ -11,4 +11,5 @@ urlpatterns = [
     # path("posts/<slug:slug>", views.post_detail, name="post-detail-page"), 
     path("posts/<slug:slug>", views.SinglePostView.as_view(), name="post-detail-page"),
     #blog/my-first-post slug:slug makes sure only urls with a correct path will trigger
+    path("read-later", views.ReadLaterView .as_view(), name="read-later")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

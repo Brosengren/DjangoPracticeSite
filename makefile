@@ -15,8 +15,5 @@ setup:
 clean:
 	rm -rf __pycache__
 
-venv:
-	source ./.venv/bin/activate
-
 admin-user:
 	python manage.py createsuperuser

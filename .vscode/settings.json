@@ -9,5 +9,11 @@
     "emmet.includeLanguages": {
         "django-html": "html"
     },
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.packageIndexDepths": [
+        {
+            "name": "django",
+            "depth": 5
+        }
+    ]
 }
