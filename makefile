@@ -17,3 +17,8 @@ clean:
 
 admin-user:
 	python manage.py createsuperuser
+
+ready-deploy:
+	python manage.py collectstatic
+	python manage.py makemigrations
+	python manage.py migrate

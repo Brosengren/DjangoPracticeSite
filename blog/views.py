@@ -69,7 +69,7 @@ class SinglePostView(View):
             "post": post,
             "post_tags":post.tags.all(),
             "comment_form":CommentForm(),
-            "comments":post.comments.all().order_by("-id"), # type: ignoret
+            "comments":post.comments.all().order_by("-id"), # type: ignore
             "saved_for_later": self.is_post_stored(request, post.id) # type: ignore
         }
         return render(request, "blog/post-detail.html", context)
@@ -89,7 +89,7 @@ class SinglePostView(View):
             "post_tags":post.tags.all(),
             "comment_form": comment_form,
             "comments":post.comments.all().order_by("-id"), # type: ignore
-            "saved_for_later": self.is_post_stored(request, post.id) 
+            "saved_for_later": self.is_post_stored(request, post.id)  # type: ignore
         }
         return render(request, "blog/post-detail.html", context)
     

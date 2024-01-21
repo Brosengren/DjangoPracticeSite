@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('base/', TemplateView.as_view(template_name="base.html")),#TODO:make this '' for home page
@@ -24,7 +26,8 @@ urlpatterns = [
     path('', include('blog.urls')), #TODO:set this to blog/ later to add projects, sites, recpies, etc.
     path('demo404', TemplateView.as_view(template_name="404.html")),
     path('demo500', TemplateView.as_view(template_name="500.html"))
-]
+]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler400 = 'mysite.views.error_400'
 handler403 = 'mysite.views.error_403'
